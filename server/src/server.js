@@ -3,6 +3,11 @@ import express from 'express'
 import { PrismaClient } from '@prisma/client';
 import cors from 'cors'
 
+import dotenv from 'dotenv'
+dotenv.config()
+
+console.log("DATABASE_URL:", process.env.DATABASE_URL)
+
 const prisma = new PrismaClient();
 
 const app = express()
@@ -76,6 +81,9 @@ app.delete('/usuarios/:id', async (req, res) => {
   res.status(200).json({message: "Usuário excluído com sucesso"});
 
 });
+
+console.log("DATABASE_URL:", process.env.DATABASE_URL);
+
 
 
 export { app, prisma }

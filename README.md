@@ -15,7 +15,32 @@ Esses exemplos servem como introdução prática às ferramentas utilizadas em t
 
 ## 🚀 Como rodar o projeto
 
-### Backend
+---
+
+## ⚙️ Configuração do Backend (.env)
+
+Para o backend funcionar corretamente com MongoDB, é necessário criar um arquivo chamado `.env` dentro da pasta `server` contendo as informações de conexão com o banco de dados.
+
+
+### 📄 Como obter a URL de conexão e Exemplo de `.env`:
+
+Acesse seu MongoDB Atlas.
+
+Clique no seu banco de dados (cluster).
+
+Vá em "Connect" → "Drivers".
+
+Copie o link de conexão.
+
+Cole no .env como valor da variável DATABASE_URL
+
+
+```env
+DATABASE_URL="mongodb+srv://<usuario>:<senha>@cluster.mongodb.net/<nomeDoBanco>?retryWrites=true&w=majority"
+Substitua os campos <senha> e <nomeDoBanco> com suas credenciais reais.
+
+
+### Backend com jest
 
 | Etapa                 | Comando          |
 |----------------------|------------------|
@@ -26,7 +51,7 @@ Esses exemplos servem como introdução prática às ferramentas utilizadas em t
 
 ---
 
-### Frontend
+### Frontend com cypress
 
 | Etapa                    | Comando             |
 |--------------------------|---------------------|
@@ -38,6 +63,16 @@ Esses exemplos servem como introdução prática às ferramentas utilizadas em t
 
 
 ---
+
+### Teste com Playwright
+
+| Etapa                          | Comando                                        |
+| ------------------------------ | ---------------------------------------------- |
+| Acessar a pasta de testes      | `cd tests`                                     |
+| Rodar os testes automatizados  | `npx playwright test`                          |
+| Ver relatório em HTML          | `npx playwright show-report`                   |
+| Acessar relatório no navegador | [http://localhost:9323](http://localhost:9323) |
+
 
 ## 📫 Contato
 
