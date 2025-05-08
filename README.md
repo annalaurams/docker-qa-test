@@ -9,20 +9,18 @@ O repositório inclui:
 - Uma **apresentação em PDF** com um resumo da área de **QA (Quality Assurance)** e comparações entre as ferramentas **Jest** e **Cypress**: [`QA.pdf`](./QA.pdf)
 - Uma **amostra de testes com Jest**, localizada na pasta `server/__tests__`
 - Uma **amostra de testes com Cypress**, localizada na pasta `client/cypress`
-
-Esses exemplos servem como introdução prática às ferramentas utilizadas em testes automatizados para frontend e backend.
-
+- Uma **amostra de testes com Playwright**, localizada na pasta `tests`
+---
 
 ## 🚀 Como rodar o projeto
 
----
 
-## ⚙️ Configuração do Backend (.env)
+### ⚙️ Configuração do Backend (.env)
 
 Para o backend funcionar corretamente com MongoDB, é necessário criar um arquivo chamado `.env` dentro da pasta `server` contendo as informações de conexão com o banco de dados.
 
 
-### 📄 Como obter a URL de conexão e Exemplo de `.env`:
+#### 📄 Como obter a URL de conexão e Exemplo de `.env`:
 
 Acesse seu MongoDB Atlas.
 
@@ -38,6 +36,7 @@ Cole no .env como valor da variável DATABASE_URL
 ```env
 DATABASE_URL="mongodb+srv://<usuario>:<senha>@cluster.mongodb.net/<nomeDoBanco>?retryWrites=true&w=majority"
 Substitua os campos <senha> e <nomeDoBanco> com suas credenciais reais.
+```
 
 
 ### Backend com jest
