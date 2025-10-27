@@ -1,43 +1,133 @@
-# 🧪 Projeto User CRUD com Testes
+# 🧪 Projeto User CRUD com Testes e Docker
+
+Este projeto implementa um CRUD completo de usuários com **backend, frontend, PostgreSQL, Docker e testes comJest, Cypress e Playwright.**
 
 ---
 
-## 📄 Slides e exemplos de testes
+## 📄 Slides e Exemplos de Testes
 
 O repositório inclui:
-
 - Uma **apresentação em PDF** com um resumo da área de **QA (Quality Assurance)** e comparações entre as ferramentas **Jest** e **Cypress**: [`QA.pdf`](./QA.pdf)
-- Uma **amostra de testes com Jest**, localizada na pasta `server/__tests__`
-- Uma **amostra de testes com Cypress**, localizada na pasta `client/cypress`
-- Uma **amostra de testes com Playwright**, localizada na pasta `tests`
+- Uma amostra de testes com **Jest**, localizada na pasta `server/__tests__`
+- Uma amostra de testes com **Cypress**, localizada na pasta `client/cypress`
+- Uma amostra de testes com **Playwright**, localizada na pasta `tests`
+- Arquivos **docker**, localizados na pasta `server`
+
 ---
 
-## 🚀 Como rodar o projeto
+## 🗄️ Banco de Dados
+O projeto utiliza PostgreSQL como banco de dados, gerenciado pelo Prisma.
 
+Crie um arquivo `.env` dentro da pasta `server` com a URL de conexão do PostgreSQL:
 
-### ⚙️ Configuração do Backend (.env)
-
-Para o backend funcionar corretamente com MongoDB, é necessário criar um arquivo chamado `.env` dentro da pasta `server` contendo as informações de conexão com o banco de dados.
-
-
-#### 📄 Como obter a URL de conexão e Exemplo de `.env`:
-
-Acesse seu MongoDB Atlas.
-
-Clique no seu banco de dados (cluster).
-
-Vá em "Connect" → "Drivers".
-
-Copie o link de conexão.
-
-Cole no .env como valor da variável DATABASE_URL
-
-
+**Para desenvolvimento local (sem Docker no backend):**
 ```env
-DATABASE_URL="mongodb+srv://<usuario>:<senha>@cluster.mongodb.net/<nomeDoBanco>?retryWrites=true&w=majority"
-Substitua os campos <senha> e <nomeDoBanco> com suas credenciais reais.
+DATABASE_URL="postgresql://qa_user:Anna182135@localhost:5433/users?schema=qa"
 ```
 
+**Para uso com Docker Compose (backend + banco):**
+```env
+DATABASE_URL="postgresql://usuario:<sua_senha>@postgres:5432/nome_banco?schema=qa"
+```
+### 🔧 Comandos do Prisma
+
+Após configurar o `.env`, execute os seguintes comandos:
+
+```bash
+# Gerar o Prisma Client
+npx prisma generate
+
+# Criar e aplicar migrations
+npx prisma migrate dev --name init-postgres
+
+# Alternativa: sincronizar schema sem criar migration
+npx prisma db push
+```
+
+---
+
+## 🐳 Docker
+
+O projeto está configurado para rodar com **Docker** e **Docker Compose**, facilitando a configuração do ambiente.
+
+### 📦 Arquivos Docker
+
+- **`Dockerfile`**: Define a imagem do backend Node.js
+- **`docker-compose.yml`**: Orquestra os serviços do PostgreSQL e do backend
+
+### 🚀 Como Rodar o Projeto
+
+Você pode rodar o projeto de duas formas:
+
+#### **A) Rodar Localmente (sem Docker para o backend)**
+
+Suba apenas o PostgreSQL via Docker Compose:
+
+```bash
+cd server
+docker compose up -d postgres
+```
+
+O banco ficará acessível em `localhost:5433`.
+
+Configure o `.env` local (veja seção acima) e instale as dependências:
+
+```bash
+cd server
+npm install
+npx prisma generate
+npx prisma migrate dev --name init-postgres
+npm run dev
+```
+
+Acesse o backend em: **http://localhost:3000**
+
+---
+
+#### **B) Rodar Tudo com Docker Compose (backend + banco)**
+
+Configure o `.env` para Docker (veja seção acima) e suba os serviços:
+
+```bash
+cd server
+docker compose up --build -d
+```
+
+Acesse:
+- **Backend:** http://localhost:4000 (mapeado de 4000:3000)
+- **Banco de dados:** `localhost:5433` (opcional, para conexões externas)
+
+Para visualizar os logs:
+
+```bash
+docker compose logs -f
+```
+
+Para parar os serviços:
+
+```bash
+docker compose down
+```
+
+Para parar e remover volumes (limpar dados do banco):
+
+```bash
+docker compose down -v
+```
+
+---
+
+## 📝 Observações
+
+- O backend está configurado para executar automaticamente `prisma generate` e `prisma migrate deploy` ao iniciar no Docker
+- A porta `5433` é usada para evitar conflitos com instalações locais do PostgreSQL (porta padrão 5432)
+- O mapeamento de portas `4000:3000` permite rodar o backend na porta 4000 do host, enquanto o container usa a porta 3000
+
+---
+
+## 🧪 Testes
+
+Os exemplos de testes estão disponíveis nas pastas mencionadas no início deste documento. Consulte o PDF incluído para mais informações sobre QA e as ferramentas de teste utilizadas.
 
 ### Backend com jest
 
