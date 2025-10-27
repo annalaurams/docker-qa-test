@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: qa_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: qa_user
+      POSTGRES_PASSWORD: Anna182135
+      POSTGRES_DB: users
+    ports:
+      - "5433:5432"        # você já mudou pra evitar conflito
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U qa_user -d users"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  server:
+    build: .
+    container_name: qa_backend
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # IMPORTANTE: host = postgres (nome do serviço), não localhost
+      DATABASE_URL: postgresql://qa_user:Anna182135@postgres:5432/users?schema=qa
+      PORT: "3000"
+    ports:
+      - "4000:3000"        # mude pra "4000:3000" se a 3000 do host estiver ocupada
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: sh -c "npx prisma generate && npx prisma migrate deploy && npm run dev"
+
+volumes:
+  pgdata:
